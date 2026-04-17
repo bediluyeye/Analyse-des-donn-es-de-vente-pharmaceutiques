@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 
 # 1. Chargement et preparation
@@ -9,16 +8,19 @@ df['year'] = df['datum'].dt.year
 df['month'] = df['datum'].dt.month
 df['weekday_name'] = df['datum'].dt.day_name()
 
-medicaments = ['M01AB', 'M01AE', 'N02BA', 'N02BE', 'N05B', 'N05C', 'R03', 'R06']
-
-print("ANALYSE COMPLÈTE DES VENTES DE MeDICAMENTS")
+title = [
+    col for col in df.columns
+    if pd.api.types.is_numeric_dtype(df[col]) 
+    and any(c.isdigit() for c in col)
+]
+print("ANALYSE COMPLÈTE DES VENTES DE title")
 
 # ============================================================================
 # QUESTION 1 : Volumes de ventes totaux pour chaque categorie (code ATC)
 # ============================================================================
 print("\n1. VOLUMES DE VENTES TOTAUX PAR CATeGORIE (CODE ATC)")
 
-q1_volumes = df[medicaments].sum().sort_values(ascending=False)
+q1_volumes = df[title].sum().sort_values(ascending=False)
 for med, volume in q1_volumes.items():
     print(f"{med}: {volume:,.2f} unites")
 
@@ -33,16 +35,16 @@ plt.show()
 # ============================================================================
 # QUESTION 2 : Marques individuelles avec ventes totales les plus elevees
 # ============================================================================
-print("\n2. MARQUES DE MeDICAMENTS AVEC VENTES TOTALES LES PLUS eLEVeES")
+print("\n2. MARQUES DE title AVEC VENTES TOTALES LES PLUS eLEVeES")
 print("-" * 80)
-q2_marques = df[medicaments].sum().sort_values(ascending=False)
-print("TOP 10 des medicaments:")
+q2_marques = df[title].sum().sort_values(ascending=False)
+print("TOP 10 des title:")
 for i, (med, volume) in enumerate(q2_marques.head(10).items(), 1):
     print(f"{i}. {med}: {volume:,.2f} unites")
 
 plt.figure(figsize=(10, 6))
 q2_marques.head(8).plot(kind='bar', color='coral', edgecolor='black')
-plt.title('Top 8 des medicaments par volume total')
+plt.title('Top 8 des title par volume total')
 plt.ylabel('Volume de ventes')
 plt.xlabel('Categorie ATC')
 plt.xticks(rotation=45)
@@ -50,16 +52,16 @@ plt.tight_layout()
 plt.show()
 
 # ============================================================================
-# QUESTION 3 : Top 3 medicaments en janvier 2015, juillet 2016, septembre 2017
+# QUESTION 3 : Top 3 title en janvier 2015, juillet 2016, septembre 2017
 # ============================================================================
-print("\n3. TOP 3 MeDICAMENTS PAR PeRIODE")
+print("\n3. TOP 3 title PAR PeRIODE")
 
 dates_test = [(2015, 1), (2016, 7), (2017, 9)]
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
 for idx, (y, m) in enumerate(dates_test):
     filtre = df[(df['year'] == y) & (df['month'] == m)]
-    top_3 = filtre[medicaments].sum().sort_values(ascending=False).head(3)
+    top_3 = filtre[title].sum().sort_values(ascending=False).head(3)
     
     print(f"\nTop 3 - {m}/{y}:")
     for i, (med, vol) in enumerate(top_3.items(), 1):
@@ -79,7 +81,7 @@ plt.show()
 print("\n4. MeDICAMENT LE PLUS VENDU EN 2017")
 print("-" * 80)
 df_2017 = df[df['year'] == 2017]
-q4_data = df_2017[medicaments].sum().sort_values(ascending=False)
+q4_data = df_2017[title].sum().sort_values(ascending=False)
 top_med_2017 = q4_data.index[0]
 top_vol_2017 = q4_data.values[0]
 print(f"Medicament le plus vendu: {top_med_2017} avec {top_vol_2017:,.2f} unites")
@@ -89,7 +91,7 @@ for i, (med, vol) in enumerate(q4_data.head(5).items(), 1):
 
 plt.figure(figsize=(10, 6))
 q4_data.plot(kind='bar', color='lightgreen', edgecolor='black')
-plt.title('Ventes totales de medicaments en 2017')
+plt.title('Ventes totales de title en 2017')
 plt.ylabel('Volume de ventes')
 plt.xlabel('Categorie ATC')
 plt.xticks(rotation=45)
@@ -101,7 +103,7 @@ plt.show()
 # ============================================================================
 print("\n5. CATeGORIE AVEC VENTES QUOTIDIENNES MOYENNES LES PLUS eLEVeES")
 
-q5_moyennes = df[medicaments].mean().sort_values(ascending=False)
+q5_moyennes = df[title].mean().sort_values(ascending=False)
 top_cat_q5 = q5_moyennes.index[0]
 top_avg_q5 = q5_moyennes.values[0]
 print(f"Categorie avec moyenne la plus elevee: {top_cat_q5} avec {top_avg_q5:.2f} unites/jour")
@@ -120,7 +122,7 @@ plt.show()
 # ============================================================================
 # QUESTION 6 : R03 (Respiratoires) davantage vendus certains mois ?
 # ============================================================================
-print("\n6. ANALYSE MENSUELLE DES MeDICAMENTS RESPIRATOIRES (R03)")
+print("\n6. ANALYSE MENSUELLE DES title RESPIRATOIRES (R03)")
 # Aggrege par mois et annee
 q6_mensuel = df.groupby(['year', 'month'])['R03'].sum().sort_values(ascending=False)
 
