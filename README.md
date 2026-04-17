@@ -43,6 +43,10 @@ Le projet utilise un fichier `data/salesdaily.csv` contenant les colonnes suivan
    python main.py
    ```
 
+
+## Github URL project
+<a href='https://roadmap.sh/projects/pharmaceutical-sales-data'>Project url</a>
+
 ## 📈 Exemples de Visualisations
 
 Le script génère plusieurs graphiques interactifs :
