@@ -18,7 +18,6 @@ Le script traite un jeu de données de ventes pharmaceutiques et répond à six 
 * **Pandas** : Manipulation et nettoyage des données.
 * **Matplotlib** : Création de visualisations (barres, courbes, nuages de points).
 * **NumPy** : Calculs numériques.
-* **Scikit-Learn** : (Préparé pour des extensions de régression linéaire).
 
 ## 📊 Structure des Données
 
